@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthorImage from "../../images/author_thumbnail.jpg";
-import nftImage from "../../images/nftImage.jpg";
 import axios from "axios";
+import ReactOwlCarousel from "react-owl-carousel";
 
 const HotCollections = () => {
   const [cards, setCards] = useState([]);
@@ -21,6 +20,19 @@ const HotCollections = () => {
     fetchData();
   }, []);
 
+  const carouselOptions = {
+    loop: true,
+    dots: false,
+    nav: true,
+    lazyLoad: true,
+    responsive: {
+      0: { items: 1 },
+      600: { items: 2 },
+      1000: { items: 3 },
+      1200: { items: 4 },
+    },
+  };
+
   return (
     <section id="section-collections" className="no-bottom">
       <div className="container">
@@ -32,12 +44,9 @@ const HotCollections = () => {
             </div>
           </div>
 
-          {cards.length > 0 &&
-            cards.map((card) => (
-              <div
-                className="col-lg-3 col-md-6 col-sm-6 col-xs-12"
-                key={card.id}
-              >
+          <ReactOwlCarousel className="owl-theme" {...carouselOptions}>
+            {cards.map((card) => (
+              <div className="px-2" key={card.id}>
                 <div className="nft_coll">
                   <div className="nft_wrap">
                     <Link to={`/item-details/${card.nftId}`}>
@@ -67,6 +76,7 @@ const HotCollections = () => {
                 </div>
               </div>
             ))}
+          </ReactOwlCarousel>
         </div>
       </div>
     </section>
