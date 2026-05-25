@@ -2,21 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import ReactOwlCarousel from "react-owl-carousel";
+import Countdown from "../UI/Countdown";
 
 const NewItems = () => {
   const [nft, setNft] = useState([]);
   const [loading, setLoading] = useState();
+  let startTime = 0;
 
   async function fetchData() {
     const { data } = await axios.get(
       "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems",
     );
-    console.log(data);
     setNft(data);
   }
 
   useEffect(() => {
     fetchData();
+    startTime = Date.now();
   }, []);
 
   const carouselOptions = {
@@ -64,7 +66,10 @@ const NewItems = () => {
                       </Link>
                     </div>
                     <div className="de_countdown">
-                      {Date.now - card.expiryDate}
+                      <Countdown
+                        expiration={card.expiryDate}
+                        startTime={startTime}
+                      />
                     </div>
 
                     <div className="nft__item_wrap">
