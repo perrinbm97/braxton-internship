@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import ReactOwlCarousel from "react-owl-carousel";
@@ -8,24 +8,41 @@ const HotCollections = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  async function fetchData() {
+  // async function fetchData() {
+  //   setLoading(true);
+  //   console.log(loading);
+
+  //   const { data } = await axios.get(
+  //     "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections",
+  //   );
+
+  //   console.log({data});
+  //   setCards(data);
+
+  //   setLoading(false);
+  //   console.log(loading);
+  // }
+
+  const fetchData = useCallback(async ()=> {
     setLoading(true);
-    console.log("loading");
+    console.log(loading);
 
     const { data } = await axios.get(
       "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections",
     );
 
-    console.log(data);
+    console.log({data});
     setCards(data);
 
     setLoading(false);
-    console.log("complete");
-  }
+    console.log(loading);
+  }, [loading])
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  console.log({loading})
 
   const carouselOptions = {
     loop: true,
