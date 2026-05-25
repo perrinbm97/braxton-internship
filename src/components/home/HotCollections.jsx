@@ -6,43 +6,20 @@ import Skeleton from "../UI/Skeleton";
 
 const HotCollections = () => {
   const [cards, setCards] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState();
 
-  // async function fetchData() {
-  //   setLoading(true);
-  //   console.log(loading);
-
-  //   const { data } = await axios.get(
-  //     "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections",
-  //   );
-
-  //   console.log({data});
-  //   setCards(data);
-
-  //   setLoading(false);
-  //   console.log(loading);
-  // }
-
-  const fetchData = useCallback(async ()=> {
+  async function fetchData() {
     setLoading(true);
-    console.log(loading);
-
     const { data } = await axios.get(
       "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections",
     );
-
-    console.log({data});
     setCards(data);
-
     setLoading(false);
-    console.log(loading);
-  }, [loading])
+  }
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  console.log({loading})
 
   const carouselOptions = {
     loop: true,
@@ -69,7 +46,11 @@ const HotCollections = () => {
           </div>
 
           {loading ? (
-            <ReactOwlCarousel className="owl-theme" {...carouselOptions}>
+            <ReactOwlCarousel
+              className="owl-theme"
+              {...carouselOptions}
+              key={loading ? "loading" : "loaded"}
+            >
               {new Array(6).fill(0).map((_, i) => (
                 <div className="px-2" key={i}>
                   <div className="nft_coll">
