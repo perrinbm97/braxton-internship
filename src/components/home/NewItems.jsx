@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import ReactOwlCarousel from "react-owl-carousel";
-import Countdown from "../UI/Countdown";
+import Timer from "../UI/Timer";
 
 const NewItems = () => {
   const [nft, setNft] = useState([]);
   const [loading, setLoading] = useState();
-  let startTime = 0;
+  const [startTime] = useState(Date.now());
 
   async function fetchData() {
     const { data } = await axios.get(
@@ -18,7 +18,6 @@ const NewItems = () => {
 
   useEffect(() => {
     fetchData();
-    startTime = Date.now();
   }, []);
 
   const carouselOptions = {
@@ -65,12 +64,15 @@ const NewItems = () => {
                         <i className="fa fa-check"></i>
                       </Link>
                     </div>
-                    <div className="de_countdown">
-                      <Countdown
-                        expiration={card.expiryDate}
-                        startTime={startTime}
-                      />
-                    </div>
+
+                    {card.expiryDate && (
+                      <div className="de_countdown">
+                        <Timer
+                          expiration={card.expiryDate}
+                          startTime={startTime}
+                        />
+                      </div>
+                    )}
 
                     <div className="nft__item_wrap">
                       <div className="nft__item_extra">
