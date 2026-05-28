@@ -3,17 +3,19 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ReactOwlCarousel from "react-owl-carousel";
 import Timer from "../UI/Timer";
+import Skeleton from "../UI/Skeleton";
 
 const NewItems = () => {
   const [nft, setNft] = useState([]);
   const [loading, setLoading] = useState();
-  const [startTime] = useState(Date.now());
 
   async function fetchData() {
+    setLoading(true);
     const { data } = await axios.get(
       "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems",
     );
     setNft(data);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -44,7 +46,68 @@ const NewItems = () => {
             </div>
           </div>
 
-          {nft.length > 0 && (
+          {loading ? (
+            <ReactOwlCarousel
+              className="owl-theme"
+              {...carouselOptions}
+              key={loading ? "loading" : "loaded"}
+            >
+              {new Array(7).fill(0).map((_, i) => (
+                <div className="px-2" key={i}>
+                  <div className="nft__item">
+                    <div className="author_list_pp">
+                      <Link
+                        to={`/author/`}
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Creator: Monica Lucas"
+                      >
+                        <Skeleton
+                          height={"50px"}
+                          width={"50px"}
+                          borderRadius={"50%"}
+                        />
+                        <i className="fa fa-check"></i>
+                      </Link>
+                    </div>
+
+                    <div className="nft__item_wrap">
+                      <div className="nft__item_extra">
+                        <div className="nft__item_buttons">
+                          <button>Buy Now</button>
+                          <div className="nft__item_share">
+                            <h4>Share</h4>
+                            <a href="" target="_blank" rel="noreferrer">
+                              <i className="fa fa-facebook fa-lg"></i>
+                            </a>
+                            <a href="" target="_blank" rel="noreferrer">
+                              <i className="fa fa-twitter fa-lg"></i>
+                            </a>
+                            <a href="">
+                              <i className="fa fa-envelope fa-lg"></i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <Link to={`/item-details/`}>
+                        <Skeleton height={"350px"} width={"100%"} />
+                      </Link>
+                    </div>
+                    <div className="nft__item_info">
+                      <Link to={`/item-details/`}>
+                        <Skeleton height={"30px"} width={"180px"} />
+                      </Link>
+                      <Skeleton height={"20px"} width={"100px"} />
+                      <div className="nft__item_like">
+                        <Skeleton height={"15px"} width={"30px"} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </ReactOwlCarousel>
+          ) : (
             <ReactOwlCarousel
               className="owl-theme"
               {...carouselOptions}
@@ -67,10 +130,7 @@ const NewItems = () => {
 
                     {card.expiryDate && (
                       <div className="de_countdown">
-                        <Timer
-                          expiration={card.expiryDate}
-                          startTime={startTime}
-                        />
+                        <Timer expiration={card.expiryDate} />
                       </div>
                     )}
 
@@ -116,62 +176,6 @@ const NewItems = () => {
               ))}
             </ReactOwlCarousel>
           )}
-          {/* {new Array(4).fill(0).map((_, index) => (
-            <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
-              <div className="nft__item">
-                <div className="author_list_pp">
-                  <Link
-                    to="/author"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    title="Creator: Monica Lucas"
-                  >
-                    <img className="lazy" src={AuthorImage} alt="" />
-                    <i className="fa fa-check"></i>
-                  </Link>
-                </div>
-                <div className="de_countdown">5h 30m 32s</div>
-
-                <div className="nft__item_wrap">
-                  <div className="nft__item_extra">
-                    <div className="nft__item_buttons">
-                      <button>Buy Now</button>
-                      <div className="nft__item_share">
-                        <h4>Share</h4>
-                        <a href="" target="_blank" rel="noreferrer">
-                          <i className="fa fa-facebook fa-lg"></i>
-                        </a>
-                        <a href="" target="_blank" rel="noreferrer">
-                          <i className="fa fa-twitter fa-lg"></i>
-                        </a>
-                        <a href="">
-                          <i className="fa fa-envelope fa-lg"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Link to="/item-details">
-                    <img
-                      src={nftImage}
-                      className="lazy nft__item_preview"
-                      alt=""
-                    />
-                  </Link>
-                </div>
-                <div className="nft__item_info">
-                  <Link to="/item-details">
-                    <h4>Pinky Ocean</h4>
-                  </Link>
-                  <div className="nft__item_price">3.08 ETH</div>
-                  <div className="nft__item_like">
-                    <i className="fa fa-heart"></i>
-                    <span>69</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))} */}
         </div>
       </div>
     </section>
