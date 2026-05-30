@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import ReactOwlCarousel from "react-owl-carousel";
-import Timer from "../UI/Timer";
-import Skeleton from "../UI/Skeleton";
+import NftCard from "../UI/nftCard";
 
 const NewItems = () => {
   const [nft, setNft] = useState([]);
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
 
   async function fetchData() {
-    setLoading(true);
     const { data } = await axios.get(
       "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems",
     );
@@ -45,137 +42,15 @@ const NewItems = () => {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-
-          {loading ? (
-            <ReactOwlCarousel
-              className="owl-theme"
-              {...carouselOptions}
-              key={loading ? "loading" : "loaded"}
-            >
-              {new Array(7).fill(0).map((_, i) => (
-                <div className="px-2" key={i}>
-                  <div className="nft__item">
-                    <div className="author_list_pp">
-                      <Link
-                        to={`/author/`}
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Creator: Monica Lucas"
-                      >
-                        <Skeleton
-                          height={"50px"}
-                          width={"50px"}
-                          borderRadius={"50%"}
-                        />
-                        <i className="fa fa-check"></i>
-                      </Link>
-                    </div>
-
-                    <div className="nft__item_wrap">
-                      <div className="nft__item_extra">
-                        <div className="nft__item_buttons">
-                          <button>Buy Now</button>
-                          <div className="nft__item_share">
-                            <h4>Share</h4>
-                            <a href="" target="_blank" rel="noreferrer">
-                              <i className="fa fa-facebook fa-lg"></i>
-                            </a>
-                            <a href="" target="_blank" rel="noreferrer">
-                              <i className="fa fa-twitter fa-lg"></i>
-                            </a>
-                            <a href="">
-                              <i className="fa fa-envelope fa-lg"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Link to={`/item-details/`}>
-                        <Skeleton height={"350px"} width={"100%"} />
-                      </Link>
-                    </div>
-                    <div className="nft__item_info">
-                      <Link to={`/item-details/`}>
-                        <Skeleton height={"30px"} width={"180px"} />
-                      </Link>
-                      <Skeleton height={"20px"} width={"100px"} />
-                      <div className="nft__item_like">
-                        <Skeleton height={"15px"} width={"30px"} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </ReactOwlCarousel>
-          ) : (
-            <ReactOwlCarousel
-              className="owl-theme"
-              {...carouselOptions}
-              key={loading ? "loading" : "loaded"}
-            >
-              {nft.map((card) => (
-                <div className="px-2" key={card.id}>
-                  <div className="nft__item">
-                    <div className="author_list_pp">
-                      <Link
-                        to={`/author/${card.authorId}`}
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Creator: Monica Lucas"
-                      >
-                        <img className="lazy" src={card.authorImage} alt="" />
-                        <i className="fa fa-check"></i>
-                      </Link>
-                    </div>
-
-                    {card.expiryDate && (
-                      <div className="de_countdown">
-                        <Timer expiration={card.expiryDate} />
-                      </div>
-                    )}
-
-                    <div className="nft__item_wrap">
-                      <div className="nft__item_extra">
-                        <div className="nft__item_buttons">
-                          <button>Buy Now</button>
-                          <div className="nft__item_share">
-                            <h4>Share</h4>
-                            <a href="" target="_blank" rel="noreferrer">
-                              <i className="fa fa-facebook fa-lg"></i>
-                            </a>
-                            <a href="" target="_blank" rel="noreferrer">
-                              <i className="fa fa-twitter fa-lg"></i>
-                            </a>
-                            <a href="">
-                              <i className="fa fa-envelope fa-lg"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Link to={`/item-details/${card.nftId}`}>
-                        <img
-                          src={card.nftImage}
-                          className="lazy nft__item_preview"
-                          alt=""
-                        />
-                      </Link>
-                    </div>
-                    <div className="nft__item_info">
-                      <Link to={`/item-details/${card.nftId}`}>
-                        <h4>{card.title}</h4>
-                      </Link>
-                      <div className="nft__item_price">{card.price} ETH</div>
-                      <div className="nft__item_like">
-                        <i className="fa fa-heart"></i>
-                        <span>{card.likes}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </ReactOwlCarousel>
-          )}
+          <ReactOwlCarousel
+            className="owl-theme"
+            {...carouselOptions}
+            key={loading ? "loading" : "loaded"}
+          >
+            {(loading ? new Array(7).fill(0) : nft).map((card, i) => (
+              <NftCard data={card} key={card.id || i} />
+            ))}
+          </ReactOwlCarousel>
         </div>
       </div>
     </section>
