@@ -1,8 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import AuthorImage from "../../images/author_thumbnail.jpg";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import AuthorCard from "../UI/AuthorCard";
 
 const TopSellers = () => {
+  const [loading, setLoading] = useState(true);
+  const [authors, setAuthors] = useState([]);
+
+  async function fetchData() {
+    const { data } = await axios.get(
+      "https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers",
+    );
+    setAuthors(data);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <section id="section-popular" className="pb-5">
       <div className="container">
@@ -15,23 +30,8 @@ const TopSellers = () => {
           </div>
           <div className="col-md-12">
             <ol className="author_list">
-              {new Array(12).fill(0).map((_, index) => (
-                <li key={index}>
-                  <div className="author_list_pp">
-                    <Link to="/author">
-                      <img
-                        className="lazy pp-author"
-                        src={AuthorImage}
-                        alt=""
-                      />
-                      <i className="fa fa-check"></i>
-                    </Link>
-                  </div>
-                  <div className="author_list_info">
-                    <Link to="/author">Monica Lucas</Link>
-                    <span>2.1 ETH</span>
-                  </div>
-                </li>
+              {(loading ? new Array(12).fill(0) : authors).map((card, i) => (
+                <AuthorCard data={card} loading={loading} key={card.id || i} />
               ))}
             </ol>
           </div>
