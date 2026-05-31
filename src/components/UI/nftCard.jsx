@@ -3,25 +3,7 @@ import { Link } from "react-router-dom";
 import Timer from "./Timer";
 import Skeleton from "./Skeleton";
 
-const NftCard = ({ data }) => {
-  const [img, setImg] = useState();
-  const mountedRef = useRef(true);
-
-  useEffect(() => {
-    const image = new Image();
-    image.src = data.nftImage;
-    image.onload = () => {
-      setTimeout(() => {
-        if (mountedRef.current) {
-          setImg(image);
-        }
-      }, 500);
-    };
-    return () => {
-      mountedRef.current = false;
-    };
-  });
-
+const NftCard = ({ data, loading }) => {
   return (
     <div className="px-2">
       <div className="nft__item">
@@ -32,10 +14,10 @@ const NftCard = ({ data }) => {
             data-bs-placement="top"
             title="Creator: Monica Lucas"
           >
-            {img ? (
-              <img className="lazy" src={data.authorImage} alt="" />
-            ) : (
+            {loading ? (
               <Skeleton height={"50px"} width={"50px"} borderRadius={"50%"} />
+            ) : (
+              <img className="lazy" src={data.authorImage} alt="" />
             )}
           </Link>
           <i className="fa fa-check"></i>
@@ -67,40 +49,40 @@ const NftCard = ({ data }) => {
           </div>
 
           <Link to={`/item-details/${data.nftId}`}>
-            {img ? (
+            {loading ? (
+              <Skeleton height={"350px"} width={"100%"} />
+            ) : (
               <img
                 src={data.nftImage}
                 className="lazy nft__item_preview"
                 alt=""
               />
-            ) : (
-              <Skeleton height={"350px"} width={"100%"} />
             )}
           </Link>
         </div>
         <div className="nft__item_info">
           <Link to={`/item-details/${data.nftId}`}>
-            {img ? (
-              <h4>{data.title}</h4>
-            ) : (
+            {loading ? (
               <Skeleton height={"30px"} width={"180px"} />
+            ) : (
+              <h4>{data.title}</h4>
             )}
           </Link>
           <div className="nft__item_price">
-            {img ? (
-              <>{data.price} ETH</>
-            ) : (
+            {loading ? (
               <Skeleton height={"20px"} width={"100px"} />
+            ) : (
+              <>{data.price} ETH</>
             )}
           </div>
           <div className="nft__item_like">
-            {img ? (
+            {loading ? (
+              <Skeleton height={"15px"} width={"30px"} />
+            ) : (
               <>
                 <i className="fa fa-heart"></i>
                 <span>{data.likes}</span>
               </>
-            ) : (
-              <Skeleton height={"15px"} width={"30px"} />
             )}
           </div>
         </div>
