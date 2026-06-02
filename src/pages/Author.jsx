@@ -4,18 +4,25 @@ import AuthorItems from "../components/author/AuthorItems";
 import { Link, useParams } from "react-router-dom";
 import AuthorImage from "../images/author_thumbnail.jpg";
 import axios from "axios";
+import Skeleton from "../components/UI/Skeleton";
 
 const Author = () => {
   const { id } = useParams();
   const [author, setAuthor] = useState([]);
+  const [profile, setProfile] = useState();
+  const [collection, setCollection] = useState([]);
   const [following, setFollowing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  async function fetchAuthor() {
+  async function fetchAuthors() {
+    setLoading(true);
     const { data } = await axios.get(
       `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`,
     );
     setAuthor(data);
-    console.log(data);
+    setCollection(data.nftCollection);
+    setProfile(data.authorImage);
+    setLoading(false);
   }
 
   function follow() {
@@ -28,7 +35,7 @@ const Author = () => {
   }
 
   useEffect(() => {
-    fetchAuthor();
+    fetchAuthors();
   }, []);
 
   return (
@@ -51,17 +58,37 @@ const Author = () => {
                 <div className="d_profile de-flex">
                   <div className="de-flex-col">
                     <div className="profile_avatar">
-                      <img src={author.authorImage} alt="" />
+                      {loading ? (
+                        <Skeleton
+                          height={"150px"}
+                          width={"150px"}
+                          borderRadius={"50%"}
+                        />
+                      ) : (
+                        <img src={author.authorImage} alt="" />
+                      )}
 
                       <i className="fa fa-check"></i>
                       <div className="profile_name">
                         <h4>
-                          {author.authorName}
+                          {loading ? (
+                            <Skeleton width={"200px"} />
+                          ) : (
+                            author.authorName
+                          )}
                           <span className="profile_username">
-                            @{author.tag}
+                            {loading ? (
+                              <Skeleton width={"100px"} />
+                            ) : (
+                              "@" + author.tag
+                            )}
                           </span>
                           <span id="wallet" className="profile_wallet">
-                            {author.address}
+                            {loading ? (
+                              <Skeleton width={"250px"} />
+                            ) : (
+                              author.address
+                            )}
                           </span>
                           <button id="btn_copy" title="Copy Text">
                             Copy
@@ -73,15 +100,21 @@ const Author = () => {
                   <div className="profile_follow de-flex">
                     <div className="de-flex-col">
                       <div className="profile_follower">
-                        {author.followers} followers
+                        {loading ? (
+                          <Skeleton width={"150px"} height={"40px"} />
+                        ) : (
+                          author.followers + " followers"
+                        )}
                       </div>
-                      <Link
-                        to="#"
-                        onClick={() => follow()}
-                        className="btn-main"
-                      >
-                        {following ? "Unfollow" : "Follow"}
-                      </Link>
+                      {!loading && (
+                        <Link
+                          to="#"
+                          onClick={() => follow()}
+                          className="btn-main"
+                        >
+                          {following ? "Unfollow" : "Follow"}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -89,7 +122,11 @@ const Author = () => {
 
               <div className="col-md-12">
                 <div className="de_tab tab_simple">
-                  <AuthorItems />
+                  <AuthorItems
+                    collection={collection}
+                    profile={profile}
+                    loading={loading}
+                  />
                 </div>
               </div>
             </div>

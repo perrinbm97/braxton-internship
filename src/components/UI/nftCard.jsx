@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Timer from "./Timer";
 import Skeleton from "./Skeleton";
 
-const NftCard = ({ data, loading }) => {
+const NftCard = ({ data, loading, profile }) => {
   return (
     <div className="px-2">
       <div className="nft__item">
@@ -17,7 +17,7 @@ const NftCard = ({ data, loading }) => {
             {loading ? (
               <Skeleton height={"50px"} width={"50px"} borderRadius={"50%"} />
             ) : (
-              <img className="lazy" src={data.authorImage} alt="" />
+              <img className="lazy" src={data.authorImage || profile} alt="" />
             )}
           </Link>
           <i className="fa fa-check"></i>
