@@ -13,19 +13,18 @@ const Author = () => {
   const [following, setFollowing] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  async function fetchAuthors() {
-    setLoading(true);
-    const { data } = await axios.get(
-      `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`,
-    );
-    setAuthor(data);
-    setCollection(data.nftCollection);
-    setProfile(data.authorImage);
-    setLoading(false);
-  }
-
   useEffect(() => {
-    fetchAuthors()
+    async function fetchAuthors() {
+      setLoading(true);
+      const { data } = await axios.get(
+        `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`,
+      );
+      setAuthor(data);
+      setCollection(data.nftCollection);
+      setProfile(data.authorImage);
+      setLoading(false);
+    }
+    fetchAuthors();
   }, []);
 
   function follow() {
