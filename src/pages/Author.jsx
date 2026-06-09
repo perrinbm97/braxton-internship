@@ -13,17 +13,22 @@ const Author = () => {
   const [following, setFollowing] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  async function fetchAuthors() {
-    setLoading(true);
-    const { data } = await axios.get(
-      `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`,
-    );
-    setAuthor(data);
-    setCollection(data.nftCollection);
-    setProfile(data.authorImage);
-    setLoading(false);
-  }
+  useEffect(() => {
+    async function fetchAuthors() {
+      setLoading(true);
+      const { data } = await axios.get(
+        `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`,
+      );
+      setAuthor(data);
+      setCollection(data.nftCollection);
+      setProfile(data.authorImage);
+      setLoading(false);
+    }
 
+    window.scrollTo(0, 0);
+    fetchAuthors();
+  }, []);
+  
   function follow() {
     setFollowing((prev) => !prev);
     if (!following) {
@@ -32,11 +37,6 @@ const Author = () => {
       author.followers--;
     }
   }
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchAuthors();
-  }, []);
 
   return (
     <div id="wrapper">
