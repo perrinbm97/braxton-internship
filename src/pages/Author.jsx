@@ -14,7 +14,7 @@ const Author = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchAuthors() {
+    const fetchAuthors = async () => {
       setLoading(true);
       const { data } = await axios.get(
         `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`,
