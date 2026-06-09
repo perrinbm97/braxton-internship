@@ -23,8 +23,20 @@ const Author = () => {
       setCollection(data.nftCollection);
       setProfile(data.authorImage);
       setLoading(false);
+    };
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
     }
+
     fetchAuthors();
+    window.scrollTo(0, 0);
+
+    return () => {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
   }, [id]);
 
   function follow() {

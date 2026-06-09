@@ -24,8 +24,8 @@ const ItemDetails = () => {
     }
 
     fetchNft();
-
     window.scrollTo(0, 0);
+    
     return () => {
       if ("scrollRestoration" in window.history) {
         window.history.scrollRestoration = "auto";
