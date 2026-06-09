@@ -1,6 +1,7 @@
 import NftCard from "../UI/nftCard";
 
 const AuthorItems = ({ collection, profile, loading }) => {
+  const disabled = true;
   return (
     <div className="de_tab_content">
       <div className="tab-1">
@@ -10,7 +11,7 @@ const AuthorItems = ({ collection, profile, loading }) => {
               className="col-lg-3 col-md-6 col-sm-6 col-xs-12"
               key={card.id || i}
             >
-              <NftCard data={card} loading={loading} profile={profile} />
+              <NftCard data={card} loading={loading} profile={profile} disabled={disabled} />
             </div>
           ))}
         </div>

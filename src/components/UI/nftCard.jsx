@@ -2,23 +2,47 @@ import { Link } from "react-router-dom";
 import Timer from "./Timer";
 import Skeleton from "./Skeleton";
 
-const NftCard = ({ data, loading, profile }) => {
+const NftCard = ({ data, loading, profile, disabled }) => {
   return (
     <div className="px-2">
       <div className="nft__item">
         <div className="author_list_pp">
-          <Link
-            to={`/author/${data.authorId}`}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Creator: Monica Lucas"
-          >
-            {loading ? (
-              <Skeleton height={"50px"} width={"50px"} borderRadius={"50%"} />
-            ) : (
-              <img className="lazy" src={data.authorImage || profile} alt="" />
-            )}
-          </Link>
+          {disabled ? (
+            <div
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Creator: Monica Lucas"
+            >
+              {" "}
+              {loading ? (
+                <Skeleton height={"50px"} width={"50px"} borderRadius={"50%"} />
+              ) : (
+                <img
+                  className="lazy"
+                  src={data.authorImage || profile}
+                  alt=""
+                />
+              )}
+            </div>
+          ) : (
+            <Link
+              to={`/author/${data.authorId}`}
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Creator: Monica Lucas"
+            >
+              {loading ? (
+                <Skeleton height={"50px"} width={"50px"} borderRadius={"50%"} />
+              ) : (
+                <img
+                  className="lazy"
+                  src={data.authorImage || profile}
+                  alt=""
+                />
+              )}
+            </Link>
+          )}
+
           <i className="fa fa-check"></i>
         </div>
 

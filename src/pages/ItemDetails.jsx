@@ -18,8 +18,20 @@ const ItemDetails = () => {
       setItem(data);
       setLoading(false);
     };
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
     fetchNft();
-  }, []);
+
+    window.scrollTo(0, 0);
+    return () => {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
+  }, [id]);
 
   return (
     <div id="wrapper">
