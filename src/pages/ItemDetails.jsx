@@ -9,28 +9,18 @@ const ItemDetails = () => {
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState();
 
+  async function fetchNft() {
+    setLoading(true);
+    const { data } = await axios.get(
+      `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`,
+    );
+    setItem(data);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    async function fetchNft() {
-      setLoading(true);
-      const { data } = await axios.get(
-        `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`,
-      );
-      setItem(data);
-      setLoading(false);
-    }
-
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-    window.scrollTo(0, 0);
     fetchNft();
-
-    return () => {
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "auto";
-      }
-    };
-  });
+  }, []);
 
   return (
     <div id="wrapper">
