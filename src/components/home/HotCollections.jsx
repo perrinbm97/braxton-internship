@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactOwlCarousel from "react-owl-carousel";
-import Skeleton from "../UI/Skeleton";
 import CollectionCard from "../UI/CollectionCard";
 
 const HotCollections = () => {
