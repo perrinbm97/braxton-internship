@@ -30,7 +30,7 @@ const ItemDetails = () => {
         window.history.scrollRestoration = "auto";
       }
     };
-  }, []);
+  });
 
   return (
     <div id="wrapper">

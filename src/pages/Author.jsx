@@ -27,8 +27,8 @@ const Author = () => {
 
     window.scrollTo(0, 0);
     fetchAuthors();
-  }, []);
-  
+  });
+
   function follow() {
     setFollowing((prev) => !prev);
     if (!following) {
