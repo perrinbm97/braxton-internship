@@ -37,12 +37,20 @@ const NewItems = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div
+              className="text-center"
+              data-aos="fade"
+              data-aos-duration="1500"
+              data-aos-anchor-placement="bottom-bottom"
+            >
               <h2>New Items</h2>
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
           <ReactOwlCarousel
+            data-aos="fade-up"
+            data-aos-duration="750"
+            data-aos-anchor-placement="center-bottom"
             className="owl-theme"
             {...carouselOptions}
             key={loading ? "loading" : "loaded"}

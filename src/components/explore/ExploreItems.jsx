@@ -39,6 +39,8 @@ const ExploreItems = () => {
         .slice(0, slice)
         .map((card, i) => (
           <div
+            data-aos="fade"
+            data-aos-duration="250"
             key={card.id || i}
             className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
             style={{ display: "block", backgroundSize: "cover" }}
@@ -53,6 +55,7 @@ const ExploreItems = () => {
           onClick={() => setSlice((prev) => prev + 4)}
           id="loadmore"
           className="btn-main lead"
+          data-aos="fade-up"
         >
           Load more
         </Link>
